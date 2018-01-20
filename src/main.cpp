@@ -43,9 +43,6 @@ void GeneratePopulation(int n, std::vector<Ball *> &ball_vec) {
         if (i < kNumRedBalls) {
             color = sf::Color::Red;
         }
-        //else if(i < 2 * kNumRedBalls){
-            //color = sf::Color::Green;
-        //}
         Ball *new_ball = new Ball(x, y, dx, dy, kBallRadius, color);
         ball_vec.push_back(new_ball);
         ++i;
@@ -77,7 +74,7 @@ void QtreePrintSize(Quadtree *root) {
         QtreePrintSize(root->GetNE());
         QtreePrintSize(root->GetSW());
         QtreePrintSize(root->GetSE());
-    } else{
+    } else {
         auto r = root->GetRect();
         std::cout << std::endl;
         std::cout << "rect: (" << r.left << ", " << r.top <<
