@@ -1,6 +1,5 @@
-#include <cmath>
-
 #include "util.h"
+#include <cmath>
 
 
 double DistSquared(double x1, double y1, double x2, double y2) {

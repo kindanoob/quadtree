@@ -1,30 +1,35 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-const int kScreenWidth = 1920;
-const int kScreenHeight = 1080;
+constexpr int kScreenWidth = 1200;
+constexpr int kScreenHeight = 800;
 
-const int kBallRadius = 4;
+constexpr int kBallRadius = 12;
 
-const int kNumBalls = 3000;
-const int kNumRedBalls = 5;//NUM_BALLS / 500;
+constexpr int kNumBalls = 200;
+constexpr int kNumRedBalls = 5;// NUM_BALLS / 500;
 
-const int kModulo = 1000;
+constexpr int kModulo = 1000;
 
-const double kBallDx = 0.04;
-const double kBallDy = 0.04;
+constexpr double kBallDx = 0.1;
+constexpr double kBallDy = 0.1;
 
-const int kCollisionOffset =  0;//in pixels
+constexpr int kCollisionOffset =  0;// in pixels
 
-const int kTimeAdjustment = 800;
+constexpr int kTimeAdjustment = 800;
 
-const int kQuadtreeNodeCapacity = 5;
+constexpr int kQuadtreeNodeCapacity = 5;
 
-const int KQuadtreeOutlineThickness = 1;
+constexpr int KQuadtreeOutlineThickness = 1;
 
-const int kBallOutlineThickness = 0;
+constexpr int kBallOutlineThickness = 0;
 
-const int kFrameRateLimit = 30;
+constexpr int kFrameRateLimit = 60;
 
+constexpr bool kDrawQuadtreeBoundaries = true;
+
+constexpr bool kPrintStatsToConsole = true;
+
+constexpr long long kOutputTimeCutoff = 500;// in milliseconds
 
 #endif // CONFIG_H_

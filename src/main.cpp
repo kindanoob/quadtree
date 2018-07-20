@@ -1,12 +1,11 @@
+#include "ball.h"
+#include "util.h"
+#include "quadtree.h"
 #include <iostream>
 #include <random>
 #include <vector>
 #include <ctime>
 #include <SFML/Graphics.hpp>
-
-#include "ball.h"
-#include "util.h"
-#include "quadtree.h"
 
 
 
@@ -29,16 +28,8 @@ void GeneratePopulation(int n, std::vector<Ball *> &ball_vec) {
         double dy = 0;
         int x_rand = (rand() % (2 * kModulo)) - kModulo;
         int y_rand = (rand() % (2 * kModulo)) - kModulo;
-        if (x_rand > 0) {
-            dx = kBallDx;
-        } else {
-            dx = -kBallDx;
-        }
-        if (y_rand > 0) {
-            dy = kBallDy;
-        } else {
-            dy = -kBallDy;
-        }
+        dx = x_rand > 0 ? kBallDx : -kBallDx;
+        dy = y_rand > 0 ? kBallDy : -kBallDy;
         sf::Color color = sf::Color::Black;
         if (i < kNumRedBalls) {
             color = sf::Color::Red;
@@ -131,28 +122,24 @@ int main() {
     std::vector<Ball *> ball_vec;
     GeneratePopulation(kNumBalls, ball_vec);
 
-    //QtreePrintSize(qtree);
-
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(kScreenWidth, kScreenHeight), "quadtree_test", sf::Style::Default, settings);
-    //window.setVerticalSyncEnabled(true);
-    //window.setFramerateLimit(FRAME_RATE_LIMIT);
+    sf::RenderWindow window(sf::VideoMode(kScreenWidth, kScreenHeight), "Quadtree collision detection", sf::Style::Default, settings);
+    window.setFramerateLimit(kFrameRateLimit);
     sf::Clock clock;
-
 
     int num_collisions = 0;
 
-    //double average_speed = sqrt(kBallDx * kBallDx + kBallDy * kBallDy);
+    long long output_dt = 0;
 
     while (window.isOpen()) {
         Quadtree *qtree = new Quadtree(0, 0, kScreenWidth, kScreenHeight);
         for (auto b: ball_vec) {
             qtree->InsertElement(b);
         }
-        //QtreePrintSize(qtree);
-        //std::vector<Ball *> qtree_leafs;
-        double dt = static_cast<double>(clock.getElapsedTime().asMicroseconds());
+        output_dt += clock.getElapsedTime().asMilliseconds();
+        auto time_elapsed = clock.getElapsedTime().asMicroseconds();
+        double dt = static_cast<double>(time_elapsed);
         int fps_count = static_cast<int>(1 / (dt / 1000000));
 
         dt /= kTimeAdjustment;
@@ -181,13 +168,18 @@ int main() {
             ball_vec[i]->CheckCollisionWithMap(kVertical);
         }
 
-        if (num_collisions < 0) {
-            std::cout << "num_checks bruteforce: " << kNumBalls * (kNumBalls - 1) << ", ";
-            std::cout << "num_checks quadtree: " << num_collisions;// << std::endl;
-            std::cout << ", FPS: " << fps_count << std::endl;
-            num_collisions = 0;
+        if (kPrintStatsToConsole) {
+            if (output_dt > kOutputTimeCutoff) {
+                std::cout << "num_checks bruteforce: " << kNumBalls * (kNumBalls - 1) << ", ";
+                std::cout << "num_checks quadtree: " << num_collisions;
+                std::cout << ", FPS: " << fps_count << std::endl;
+                num_collisions = 0;
+                output_dt = 0;
+            }
+        } 
+        if (kDrawQuadtreeBoundaries) {
+            DrawQtree(qtree, window);
         }
-        //DrawQtree(qtree, window);
 
         for (auto &b: ball_vec) {
             b->GetShape().setPosition(sf::Vector2f(b->GetX(), b->GetY()));

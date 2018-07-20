@@ -1,7 +1,7 @@
+#include "quadtree.h"
 #include <iostream>
 #include <cmath>
-
-#include "quadtree.h"
+#include <cassert>
 
 
 
@@ -29,7 +29,6 @@ bool Quadtree::InsertElement(Ball *b) {
         children_.push_back(b);
         return true;
     }
-
     if(NW_ == nullptr) {
         Subdivide(this);
     }
@@ -40,7 +39,8 @@ bool Quadtree::InsertElement(Ball *b) {
     if(insert_NW || insert_NE || insert_SW || insert_SE) {
         return true;
     }
-    //std::cout << "Insert element, this should never happen." << std::endl;
+    std::cout << "In Insert element(), this should never happen." << std::endl;
+    //assert(false);
     return false;
 }
 

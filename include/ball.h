@@ -1,13 +1,12 @@
 #ifndef BALL_H_
 #define BALL_H_
 
+#include "config.h"
 #include <random>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "config.h"
-
-enum Direction {
+enum direction {
     kHorizontal,
     kVertical
 };
@@ -23,13 +22,13 @@ public:
         shape_.setOutlineColor(sf::Color::Black);
 
     }
-    double GetX() {
+    double GetX() const {
         return x_;
     }
-    double GetY() {
+    double GetY() const {
         return y_;
     }
-    double GetR() {
+    double GetR() const {
         return r_;
     }
     void SetX(double x) {
@@ -38,10 +37,10 @@ public:
     void SetY(double y) {
         y_ = y;
     }
-    double GetDx() {
+    double GetDx() const {
         return dx_;
     }
-    double GetDy() {
+    double GetDy() const {
         return dy_;
     }
     void SetDx(double dx) {
@@ -50,13 +49,16 @@ public:
     void SetDy(double dy) {
         dy_ = dy;
     }
+    const sf::CircleShape& GetShape() const {
+        return shape_;
+    }
     sf::CircleShape& GetShape() {
         return shape_;
     }
     void Update(double dt);
     void UpdateTemperatureColor(double max_speed, double avg_abs_speed);
     void CheckCollisionWithBall(Ball *ball);
-    void CheckCollisionWithMap(Direction dir);
+    void CheckCollisionWithMap(direction dir);
 
 
 private:

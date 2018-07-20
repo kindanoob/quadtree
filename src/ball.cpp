@@ -1,8 +1,6 @@
-#include <iostream>
-
-
 #include "ball.h"
 #include "util.h"
+#include <iostream>
 
 
 void Ball::Update(double dt) {
@@ -11,7 +9,7 @@ void Ball::Update(double dt) {
 }
 
 
-void Ball::CheckCollisionWithMap(Direction dir) {
+void Ball::CheckCollisionWithMap(direction dir) {
     if (dir == kHorizontal) {
         if (GetX() - GetR() <= 0) {
             SetX(GetR() + kCollisionOffset);
@@ -63,21 +61,15 @@ void Ball::CheckCollisionWithBall(Ball *b) {
 
 
 void Ball::UpdateTemperatureColor(double max_speed, double avg_speed) {
-    //double abs_speed = fabs(GetDx()) + fabs(GetDy());
     double dx = GetDx();
     double dy = GetDy();
     double speed = sqrt(dx * dx + dy * dy);
-    //abs_speed += 0.0000001;//avoid divizion by zero
-
-    //c = sqrt(c);
     if (speed <= avg_speed) {//the ball is moving slower than average
         double c = speed / avg_speed;
-        //c *= c;
         GetShape().setFillColor(sf::Color(c * 255, c * 255, 255));
     } else {
         double c = speed / max_speed;
         c = 2 - c;
-        //c *= c;
         GetShape().setFillColor(sf::Color(255, c * 255, c * 255));
     }
 }
